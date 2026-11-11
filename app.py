@@ -495,111 +495,207 @@ page = st.sidebar.radio(
 # ---------------- HOME ----------------
 if page == "Home":
 
+    # Live statistics calculated from the dataset
+    total_records = len(df)
+    average_charges = float(df["charges"].mean())
+    highest_charges = float(df["charges"].max())
+    smoker_count = int(
+        df["smoker"].astype(str).str.strip().str.lower().eq("yes").sum()
+    )
+    smoker_percentage = smoker_count / total_records * 100 if total_records else 0
+    average_bmi = float(df["bmi"].mean())
 
-    # KPI Cards
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        st.metric("Dataset Records", f"{len(df):,}")
-
-    with c2:
-        st.metric("Input Features", "6")
-
-    with c3:
-        st.metric(
-            "Models Evaluated",
-            len(reg_models) + len(clf_models)
-        )
-
-    # Project Overview
     st.markdown(
-        '<p class="home-section-label">About this project</p>',
+        '<p class="home-section-label">Dataset at a glance</p>',
         unsafe_allow_html=True
     )
 
-    left, right = st.columns([1.25, 1])
+    k1, k2, k3, k4 = st.columns(4)
+    with k1:
+        st.metric("Dataset Records", f"{total_records:,}")
+    with k2:
+        st.metric("Average Insurance Charges", f"${average_charges:,.0f}")
+    with k3:
+        st.metric("Highest Insurance Charges", f"${highest_charges:,.0f}")
+    with k4:
+        st.metric("Smoker Percentage", f"{smoker_percentage:.1f}%")
 
-    with left:
-        st.html("""
-        <div class="section-card">
-            <h3>Project Overview</h3>
+    # Charts based on the actual dataset
+    st.markdown(
+        '<p class="home-section-label">Insights from the actual dataset</p>',
+        unsafe_allow_html=True
+    )
 
-            <p>
-                This application brings together two machine
-                learning tasks: estimating medical insurance
-                charges with a regression model and predicting
-                smoker status with a classification model.
-            </p>
+    chart_left, chart_right = st.columns(2)
 
-            <p>
-                It also provides exploratory data analysis and
-                model comparison views to help understand the
-                dataset and evaluate the trained models.
-            </p>
-        </div>
-        """)
+    with chart_left:
+        st.subheader("Insurance Charges by Smoker Status")
+        fig, ax = plt.subplots(figsize=(7, 4))
+        sns.boxplot(
+            data=df,
+            x="smoker",
+            y="charges",
+            hue="smoker",
+            palette={"yes": "#0F9D91", "no": "#8AA6B8"},
+            legend=False,
+            ax=ax
+        )
+        ax.set_xlabel("Smoker")
+        ax.set_ylabel("Insurance charges ($)")
+        ax.set_title("Smokers and non-smokers")
+        fig.tight_layout()
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "This boxplot compares the distribution of insurance charges "
+            "for smokers and non-smokers."
+        )
 
-    with right:
-        st.html("""
-        <div class="section-card">
-            <h3>Project Objectives</h3>
+    with chart_right:
+        st.subheader("Age vs Insurance Charges")
+        fig, ax = plt.subplots(figsize=(7, 4))
+        sns.scatterplot(
+            data=df,
+            x="age",
+            y="charges",
+            hue="smoker",
+            palette={"yes": "#0F9D91", "no": "#8AA6B8"},
+            alpha=0.7,
+            ax=ax
+        )
+        ax.set_xlabel("Age (years)")
+        ax.set_ylabel("Insurance charges ($)")
+        ax.set_title("How charges vary with age")
+        fig.tight_layout()
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "Each point represents one dataset record; colour indicates "
+            "smoker status."
+        )
 
-            <ul>
-                <li>Estimate medical insurance charges.</li>
-                <li>Demonstrate smoker-status classification.</li>
-                <li>Compare machine learning algorithms.</li>
-                <li>Explore patterns through data visualizations.</li>
-            </ul>
-        </div>
-        """)
+    st.markdown(
+        '<p class="home-section-label">More dataset facts</p>',
+        unsafe_allow_html=True
+    )
+    fact1, fact2, fact3 = st.columns(3)
+    with fact1:
+        st.metric("Average BMI", f"{average_bmi:.1f}")
+    with fact2:
+        st.metric("Smokers in Dataset", f"{smoker_count:,}")
+    with fact3:
+        st.metric("Non-smokers in Dataset", f"{total_records - smoker_count:,}")
 
-    # Application Features
+    # Best regression model is selected by highest R2.
+    # Best classification model is selected by highest F1 when available,
+    # because accuracy alone can be misleading for imbalanced classes.
+    st.markdown(
+        '<p class="home-section-label">Best model snapshot</p>',
+        unsafe_allow_html=True
+    )
+
+    reg_home = bundle["reg_results"].copy()
+    clf_home = bundle["clf_results"].copy()
+
+    reg_home["R2 Score"] = pd.to_numeric(reg_home["R2 Score"], errors="coerce")
+    best_reg_row = reg_home.loc[reg_home["R2 Score"].idxmax()]
+    reg_name = str(best_reg_row["Model"])
+    reg_score = float(best_reg_row["R2 Score"])
+
+    if "F1 Score" in clf_home.columns:
+        clf_home["F1 Score"] = pd.to_numeric(
+            clf_home["F1 Score"], errors="coerce"
+        )
+    if (
+        "F1 Score" in clf_home.columns
+        and clf_home["F1 Score"].notna().any()
+    ):
+        best_clf_row = clf_home.loc[clf_home["F1 Score"].idxmax()]
+        clf_name = str(best_clf_row["Model"])
+        clf_score = float(best_clf_row["F1 Score"])
+        clf_metric_label = "F1 Score"
+    else:
+        clf_home["Accuracy"] = pd.to_numeric(
+            clf_home["Accuracy"], errors="coerce"
+        )
+        best_clf_row = clf_home.loc[clf_home["Accuracy"].idxmax()]
+        clf_name = str(best_clf_row["Model"])
+        clf_score = float(best_clf_row["Accuracy"])
+        clf_metric_label = "Accuracy"
+
+    model_left, model_right = st.columns(2)
+    with model_left:
+        st.markdown(
+            f"""
+            <div class="section-card">
+                <h3>🏆 Best Regression Model</h3>
+                <p><strong>{reg_name}</strong></p>
+                <p>R² score: <strong>{reg_score:.3f}</strong></p>
+                <p>A higher R² score means the model explains more variation
+                in insurance charges.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with model_right:
+        st.markdown(
+            f"""
+            <div class="section-card">
+                <h3>🎯 Best Classification Model</h3>
+                <p><strong>{clf_name}</strong></p>
+                <p>{clf_metric_label}: <strong>{clf_score:.3f}</strong></p>
+                <p>F1 score is prioritised when available because the smoker
+                and non-smoker classes are imbalanced.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
     st.markdown(
         '<p class="home-section-label">Explore the application</p>',
         unsafe_allow_html=True
     )
 
     q1, q2, q3 = st.columns(3)
-
     with q1:
-        st.html("""
-        <div class="section-card">
-            <h3>💰 Insurance Prediction</h3>
-
-            <p>
-                Enter demographic and lifestyle details
-                to estimate medical insurance charges.
-            </p>
-        </div>
-        """)
-
+        st.markdown(
+            """
+            <div class="section-card">
+                <h3>💰 Insurance Prediction</h3>
+                <p>Estimate medical insurance charges using age, BMI,
+                family details, region and smoking status.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     with q2:
-        st.html("""
-        <div class="section-card">
-            <h3>🚭 Smoker Classification</h3>
-
-            <p>
-                Explore the trained model's smoker-status
-                prediction from the provided inputs.
-            </p>
-        </div>
-        """)
-
+        st.markdown(
+            """
+            <div class="section-card">
+                <h3>🚭 Smoker Classification</h3>
+                <p>Explore the classification model's prediction using
+                demographic and lifestyle inputs.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     with q3:
-        st.html("""
-        <div class="section-card">
-            <h3>📊 Analysis & Performance</h3>
-
-            <p>
-                Review dataset visualizations and compare
-                regression and classification models.
-            </p>
-        </div>
-        """)
+        st.markdown(
+            """
+            <div class="section-card">
+                <h3>📊 Data & Model Analysis</h3>
+                <p>View additional dataset visualizations and compare
+                the evaluated machine learning algorithms.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     st.caption(
-        "Educational project only. Predictions are estimates "
-        "and are not medical advice or actual insurance quotations."
+        "Dataset statistics and charts are calculated from the project dataset. "
+        "Model scores are from the saved evaluation results. Educational use only; "
+        "predictions are not medical advice or actual insurance quotations."
     )
 
 
@@ -843,79 +939,46 @@ elif page == "Smoker Classification":
 
 
 # ---------------- DATA ANALYSIS ----------------
+
 elif page == "Data Analysis":
 
     st.title("📊 Exploratory Data Analysis")
 
     st.subheader("Dataset Preview")
-
-    st.dataframe(
-        df.head(10),
-        use_container_width=True
-    )
+    st.markdown(
+    df.head(10).to_html(index=False, border=0),
+    unsafe_allow_html=True
+)
 
     st.subheader("Insurance Charges Distribution")
-
     fig, ax = plt.subplots(figsize=(9, 4))
-
-    sns.histplot(
-        df["charges"],
-        kde=True,
-        ax=ax,
-        color="#159D91"
-    )
-
+    sns.histplot(df["charges"], kde=True, ax=ax, color="#159D91")
     ax.set_title("Distribution of Insurance Charges")
-
     st.pyplot(fig)
     plt.close(fig)
 
     st.subheader("Insurance Charges by Smoker Status")
-
     fig, ax = plt.subplots(figsize=(8, 4))
-
-    sns.boxplot(
-        data=df,
-        x="smoker",
-        y="charges",
-        ax=ax
-    )
-
+    sns.boxplot(data=df, x="smoker", y="charges", ax=ax)
     ax.set_title("Charges Comparison by Smoking Status")
-
     st.pyplot(fig)
     plt.close(fig)
 
     st.subheader("BMI vs Insurance Charges")
-
     fig, ax = plt.subplots(figsize=(8, 4))
-
-    sns.scatterplot(
-        data=df,
-        x="bmi",
-        y="charges",
-        hue="smoker",
-        ax=ax
-    )
-
+    sns.scatterplot(data=df, x="bmi", y="charges", hue="smoker", ax=ax)
     st.pyplot(fig)
     plt.close(fig)
 
     st.subheader("Correlation Heatmap")
-
     numeric_df = df.select_dtypes(include=np.number)
-
     fig, ax = plt.subplots(figsize=(8, 5))
-
-    sns.heatmap(
-        numeric_df.corr(),
-        annot=True,
-        cmap="Blues",
-        ax=ax
-    )
-
+    sns.heatmap(numeric_df.corr(), annot=True, cmap="Blues", ax=ax)
     st.pyplot(fig)
     plt.close(fig)
+
+   
+
 
 
 # ---------------- MODEL PERFORMANCE ----------------
@@ -930,19 +993,21 @@ elif page == "Model Performance":
     if "Linear Regression" not in reg_results["Model"].values:
         st.warning("Regression results are incomplete.")
 
-    st.dataframe(
-        reg_results.round(3),
-        use_container_width=True
+ 
+    st.markdown(
+        reg_results.round(3).to_html(index=False, border=0),
+        unsafe_allow_html=True
     )
 
     st.subheader("Classification Models")
 
     clf_results = bundle["clf_results"].copy()
 
-    st.dataframe(
-        clf_results.round(4),
-        use_container_width=True
+    st.markdown(
+        clf_results.round(4).to_html(index=False, border=0),
+        unsafe_allow_html=True
     )
+
 
     st.subheader("Regression R2 Score Comparison")
 
@@ -987,13 +1052,13 @@ elif page == "Model Performance":
         plt.close(fig)
 
 
-# ---------------- FOOTER ----------------
-st.sidebar.divider()
+    # ---------------- FOOTER ----------------
+    st.sidebar.divider()
 
-st.sidebar.caption(
-    "Medical Insurance ML Mini Project"
-)
+    st.sidebar.caption(
+        "Medical Insurance ML Mini Project"
+    )
 
-st.sidebar.caption(
-    "Educational use only"
-)
+    st.sidebar.caption(
+        "Educational use only"
+    )
