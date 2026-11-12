@@ -6,6 +6,7 @@ import joblib
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
+import textwrap
 # ---------------- PAGE CONFIGURATION ----------------
 st.set_page_config(
     page_title="Medical Insurance Predictor",
@@ -52,10 +53,8 @@ st.markdown("""
 }
 
 .main h1 {
-    font-size: 1.75rem;
     font-weight: 750;
     letter-spacing: -0.7px;
-    line-height: 1.2;
 }
 
 .main h2, .main h3 {
@@ -68,8 +67,9 @@ st.markdown("""
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background: #102A43;
-    border-right: 1px solid rgba(255,255,255,.08);
+    background: linear-gradient(
+        180deg, #102A43 0%, #153B55 100%
+    );
 }
 
 [data-testid="stSidebar"] * {
@@ -91,17 +91,17 @@ st.markdown("""
 
 /* Hero banner */
 .hero-panel {
-    background: #FFFFFF;
-    border: 1px solid #DCE5EC;
-    border-left: 4px solid #0F9D91;
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin: 4px 0 18px;
-    box-shadow: 0 2px 8px rgba(16,42,67,.04);
+    background: linear-gradient(
+        115deg, #102A43 0%, #18566B 100%
+    );
+    border-radius: 20px;
+    padding: 30px 34px;
+    margin: 8px 0 24px 0;
+    box-shadow: 0 10px 26px rgba(16,42,67,.13);
 }
 
 .hero-kicker {
-    color: #087F78 !important;
+    color: #A8E6DE !important;
     text-transform: uppercase;
     letter-spacing: 1.6px;
     font-size: .78rem;
@@ -110,16 +110,16 @@ st.markdown("""
 }
 
 .hero-heading {
-    color: #102A43 !important;
-    font-size: 1.75rem;
+    color: #FFFFFF !important;
+    font-size: 2.1rem;
     line-height: 1.18;
     font-weight: 800;
     margin: 0 0 10px 0;
 }
 
 .hero-copy {
-    color: #465B6E !important;
-    font-size: .95rem;
+    color: #D9E8F1 !important;
+    font-size: 1rem;
     margin: 0;
     max-width: 760px;
 }
@@ -128,10 +128,10 @@ st.markdown("""
 [data-testid="stMetric"] {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-left: 3px solid #0F9D91;
-    border-radius: 11px;
-    padding: 14px 16px;
-    box-shadow: 0 2px 8px rgba(16,42,67,.04);
+    border-left: 4px solid #0F9D91;
+    border-radius: 14px;
+    padding: 17px 20px;
+    box-shadow: 0 5px 18px rgba(16,42,67,.055);
 }
 
 [data-testid="stMetricLabel"] p {
@@ -148,10 +148,10 @@ st.markdown("""
 .section-card {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-radius: 12px;
-    padding: 16px 18px;
-    min-height: 148px;
-    box-shadow: 0 2px 8px rgba(16,42,67,.04);
+    border-radius: 15px;
+    padding: 20px 22px;
+    min-height: 180px;
+    box-shadow: 0 5px 18px rgba(16,42,67,.045);
 }
 
 .section-card h3 {
@@ -185,10 +185,9 @@ st.markdown("""
 [data-testid="stForm"] {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-radius: 12px;
-    max-width: 900px;
-    padding: 14px 18px 12px;
-    box-shadow: 0 2px 8px rgba(16,42,67,.04);
+    border-radius: 16px;
+    padding: 22px 24px 18px;
+    box-shadow: 0 5px 18px rgba(16,42,67,.045);
 }
 
 [data-testid="stTextInput"] input,
@@ -197,29 +196,7 @@ st.markdown("""
     background: #FFFFFF;
     color: #18324B;
     border-color: #D5E0EA;
-    border-radius: 7px;
-    min-height: 2.35rem;
-}
-
-[data-testid="stNumberInput"] input {
-    height: 2.35rem;
-    min-height: 2.35rem;
-    color: #18324B !important;
-}
-[data-testid="stSelectbox"] [data-baseweb="select"] * { color: #18324B !important; }
-div[role="listbox"] * { color: #18324B !important; }
-[data-testid="stNumberInput"] button {
-    width: 2rem;
-    min-width: 2rem;
-    height: 2rem;
-}
-[data-testid="stWidgetLabel"] p,
-[data-testid="stWidgetLabel"] label,
-[data-testid="stWidgetLabel"] {
-    color: #263B4D !important;
-    font-size: .84rem !important;
-    font-weight: 650 !important;
-    margin-bottom: .2rem !important;
+    border-radius: 9px;
 }
 
 .stButton > button,
@@ -227,11 +204,10 @@ div[role="listbox"] * { color: #18324B !important; }
     background: #0F9D91;
     color: white !important;
     border: 0;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 700;
-    padding: .48rem .9rem;
-    min-height: 2.35rem;
-    transition: background-color .15s ease;
+    padding: .62rem 1.1rem;
+    transition: .2s ease;
 }
 
 .stButton > button:hover,
@@ -256,75 +232,18 @@ div[role="listbox"] * { color: #18324B !important; }
 [data-testid="stAlert"] {
     border-radius: 12px;
 }
-/* Sidebar brand and navigation */
-[data-testid="stSidebar"] {
-    background: #102A43;
-    border-right: 1px solid rgba(255,255,255,.08);
-}
-[data-testid="stSidebar"] [role="radiogroup"] { gap: 2px; }
-[data-testid="stSidebar"] [role="radiogroup"] label {
-    min-height: 38px;
-    padding: 6px 10px !important;
-    margin: 1px 0;
-    border-radius: 7px;
-    border-left: 2px solid transparent;
-    transition: background .15s ease;
-}
-[data-testid="stSidebar"] [role="radiogroup"] label:hover {
-    background: rgba(255,255,255,.09);
-}
-[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
-    background: rgba(15,157,145,.18);
-    border-left-color: #39C6B6;
-}
-[data-testid="stSidebar"] [role="radiogroup"] label p { font-size: .92rem; font-weight: 600; }
-[data-testid="stSidebar"] [role="radiogroup"] label[data-baseweb="radio"] > div:first-child {
-    width: 0;
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    opacity: 0;
-}
-[data-testid="stSidebar"] [role="radiogroup"] label:focus-within {
-    outline: 2px solid rgba(57,198,182,.75);
-    outline-offset: 1px;
-}
-.brand-lockup { display:flex; align-items:center; gap:10px; padding:4px 2px 12px; }
-.brand-mark {
-    width:36px; height:36px; display:grid; place-items:center; flex:0 0 36px;
-    border-radius:8px; background:#0F9D91;
-}
-.brand-mark svg { width:24px; height:24px; display:block; }
-.brand-name { color:#fff; font-size:1rem; font-weight:700; letter-spacing:-.2px; line-height:1.2; }
-.brand-subtitle { color:#D1DCE5; font-size:.72rem; margin-top:3px; }
-
-/* Dashboard surfaces and responsive layouts */
-.main .block-container {
-    padding-left: clamp(1rem, 3vw, 2.5rem);
-    padding-right: clamp(1rem, 3vw, 2.5rem);
-}
-[data-testid="stMetric"] { min-height:96px; }
-.result-card {
-    background:#fff; border:1px solid #D9E7ED; border-left:4px solid #0F9D91;
-    border-radius:11px; padding:14px 18px; margin:12px 0 6px;
-    max-width:900px; box-shadow:0 2px 8px rgba(16,42,67,.05);
-}
-.result-eyebrow { color:#526779 !important; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.7px; margin:0 0 4px; }
-.result-value { color:#102A43 !important; font-size:1.65rem; line-height:1.15; font-weight:750; margin:0; }
-.result-copy { color:#465B6E !important; font-size:.84rem; margin:5px 0 0; }
-.result-card.classification { border-left-color:#23877B; }
-@media (max-width:760px) {
-    .main .block-container { padding-top:1rem; padding-bottom:2rem; }
-    .hero-panel { padding:16px; border-radius:10px; }
-    .hero-heading { font-size:1.45rem; }
-    [data-testid="stForm"] { padding:12px 12px 10px; }
-    [data-testid="stMetric"] { min-height:96px; padding:14px; }
-    .result-value { font-size:1.65rem; }
-    [data-testid="stHorizontalBlock"] { flex-wrap:wrap !important; gap:.6rem !important; }
-    [data-testid="stHorizontalBlock"] > [data-testid="column"] { min-width:min(100%, 260px) !important; flex:1 1 100% !important; }
-}
 </style>
 """, unsafe_allow_html=True)
+st.markdown(textwrap.dedent("""
+<div class="hero-panel">
+    <p class="hero-kicker">Machine learning • Healthcare analytics</p>
+    <p class="hero-heading">Understand insurance costs.<br>Explore smarter predictions.</p>
+    <p class="hero-copy">
+        An interactive academic project for estimating medical insurance charges,
+        exploring dataset patterns, and demonstrating smoker-status classification.
+    </p>
+</div>
+"""), unsafe_allow_html=True)
 @st.cache_resource
 def load_bundle():
     bundle_path = Path(__file__).resolve().parent / "insurance_project_bundle.pkl"
@@ -558,54 +477,23 @@ clf_columns = bundle["clf_columns"]
 
 
 # ---------------- SIDEBAR ----------------
-st.sidebar.markdown(
-    """
-    <div class="brand-lockup">
-      <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 3.2 27 7.6v7.2c0 7.2-4.7 12.1-11 14-6.3-1.9-11-6.8-11-14V7.6L16 3.2Z" fill="#E7FBF8"/>
-          <path d="M14.1 8.8h3.8v5.3h5.3v3.8h-5.3v5.3h-3.8v-5.3H8.8v-3.8h5.3V8.8Z" fill="#087F78"/>
-        </svg>
-      </div>
-      <div><div class="brand-name">MediPredict</div>
-      <div class="brand-subtitle">Healthcare analytics</div></div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.sidebar.title("🏥 MediPredict")
+st.sidebar.write("Medical Insurance Analytics")
 
-selected_page = st.sidebar.radio(
+page = st.sidebar.radio(
     "NAVIGATION",
     [
-        "⌂  Home",
-        "▣  Insurance Prediction",
-        "⚕  Smoker Classification",
-        "▤  Data Analysis",
-        "▥  Model Performance"
+        "Home",
+        "Insurance Prediction",
+        "Smoker Classification",
+        "Data Analysis",
+        "Model Performance"
     ]
 )
-page = {
-    "⌂  Home": "Home",
-    "▣  Insurance Prediction": "Insurance Prediction",
-    "⚕  Smoker Classification": "Smoker Classification",
-    "▤  Data Analysis": "Data Analysis",
-    "▥  Model Performance": "Model Performance"
-}[selected_page]
 
 
 # ---------------- HOME ----------------
 if page == "Home":
-
-    st.markdown(
-        """
-        <div class="hero-panel">
-          <p class="hero-kicker">Healthcare analytics</p>
-          <p class="hero-heading">Medical insurance insights</p>
-          <p class="hero-copy">Explore insurance cost estimates, dataset patterns and model predictions.</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
 
     # Live statistics calculated from the dataset
     total_records = len(df)
@@ -656,7 +544,7 @@ if page == "Home":
         ax.set_ylabel("Insurance charges ($)")
         ax.set_title("Smokers and non-smokers")
         fig.tight_layout()
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig, use_container_width=True)
         plt.close(fig)
         st.caption(
             "This boxplot compares the distribution of insurance charges "
@@ -679,7 +567,7 @@ if page == "Home":
         ax.set_ylabel("Insurance charges ($)")
         ax.set_title("How charges vary with age")
         fig.tight_layout()
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig, use_container_width=True)
         plt.close(fig)
         st.caption(
             "Each point represents one dataset record; colour indicates "
@@ -869,7 +757,7 @@ elif page == "Insurance Prediction":
 
         submitted = st.form_submit_button(
             "Predict Insurance Charges",
-            width="content"
+            use_container_width=True
         )
 
     if submitted:
@@ -918,82 +806,115 @@ elif page == "Insurance Prediction":
                         "Please try again."
                     )
                 elif prediction < 0:
+                                  
                     st.error(
-                        "The model returned a negative insurance cost. "
+                        "The model returned an invalid insurance cost. "
                         "Please try again."
                     )
                 else:
-                    st.markdown(
-                        f"""
-                        <div class="result-card">
-                          <p class="result-eyebrow">Estimated insurance charges</p>
-                          <p class="result-value">${prediction:,.2f}</p>
-                          <p class="result-copy">Model generated estimate · For educational exploration only</p>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    st.success("Your prediction is ready!")
+
+                    st.markdown("### 💰 Your Estimated Insurance Cost")
+
+                    st.metric(
+                        label="Estimated Annual Insurance Charges",
+                        value=f"${prediction:,.2f}"
                     )
-                    st.caption("This estimate is not an actual insurance quotation.")
+
+                    st.markdown("### 📋 Your Input Summary")
+
+                    result_col1, result_col2, result_col3 = st.columns(3)
+
+                    with result_col1:
+                        st.write(f"**Age:** {age}")
+                        st.write(f"**Gender:** {sex.title()}")
+
+                    with result_col2:
+                        st.write(f"**BMI:** {bmi}")
+                        st.write(f"**Children:** {children}")
+
+                    with result_col3:
+                        st.write(f"**Smoker:** {smoker.title()}")
+                        st.write(f"**Region:** {region.title()}")
+
+                    st.caption(
+                        "This is an educational ML prediction, "
+                        "not an actual insurance quotation."
+                    )
+                
+                    
+                 
+
+
 
 
 # ---------------- SMOKER CLASSIFICATION ----------------
+
 elif page == "Smoker Classification":
 
     st.title("🚭 Smoker Status Classification")
-
     st.write(
-        "Demonstration of the trained classification model."
+        "Enter personal details to predict the smoking status "
+        "using the trained machine learning model."
+    )
+
+    st.info(
+        "This prediction is experimental and is intended "
+        "for educational purposes only."
     )
 
     with st.form("smoker_form"):
-        input_left, input_right = st.columns(2)
 
-        with input_left:
+        st.subheader("Personal Information")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
             age = st.number_input(
                 "Age",
-                18,
-                100,
-                25,
+                min_value=18,
+                max_value=100,
+                value=25,
                 key="smoker_age"
             )
 
-            bmi = st.number_input(
-                "BMI",
-                10.0,
-                60.0,
-                27.5,
-                key="smoker_bmi"
-            )
-
-            region = st.selectbox(
-                "Region",
-                [
-                    "southwest",
-                    "southeast",
-                    "northwest",
-                    "northeast"
-                ],
-                key="smoker_region"
-            )
-
-        with input_right:
             sex = st.selectbox(
                 "Gender",
                 ["female", "male"],
                 key="smoker_sex"
             )
 
+        with col2:
+            bmi = st.number_input(
+                "BMI",
+                min_value=10.0,
+                max_value=60.0,
+                value=27.5,
+                key="smoker_bmi"
+            )
+
             children = st.number_input(
                 "Number of Children",
-                0,
-                10,
-                0,
+                min_value=0,
+                max_value=10,
+                value=0,
                 key="smoker_children"
             )
 
+        region = st.selectbox(
+            "Region",
+            [
+                "southwest",
+                "southeast",
+                "northwest",
+                "northeast"
+            ],
+            key="smoker_region"
+        )
+
         submitted = st.form_submit_button(
-            "Classify",
-            width="content"
+            "Classify Smoking Status",
+            use_container_width=True
         )
 
     if submitted:
@@ -1017,166 +938,599 @@ elif page == "Smoker Classification":
             classification_values = np.asarray(
                 best_clf_model.predict(clf_input)
             )
-        except Exception:
-            st.error("Smoker classification failed. Please try again.")
-        else:
+
             if classification_values.size != 1:
-                st.error(
-                    "The model returned an invalid number of smoker "
-                    "classification results. Please try again."
-                )
+                st.error("Invalid prediction returned by the model.")
+
             else:
                 result = classification_values.item()
-                valid_label = (
-                    isinstance(
-                        result,
-                        (int, float, np.integer, np.floating)
-                    )
+
+                if (
+                    isinstance(result, (int, float, np.integer, np.floating))
                     and not isinstance(result, (bool, np.bool_))
                     and np.isfinite(result)
                     and result in (0, 1)
-                )
-                if not valid_label:
+                ):
+
+                    st.divider()
+                    st.subheader("📋 Prediction Result")
+
+                    if int(result) == 1:
+                        st.warning("🚬 Predicted Status: Smoker")
+                    else:
+                        st.success("✅ Predicted Status: Non-Smoker")
+
+                    # Show probability only if supported by the model
+                    if hasattr(best_clf_model, "predict_proba"):
+
+                        probabilities = best_clf_model.predict_proba(
+                            clf_input
+                        )[0]
+
+                        classes = list(best_clf_model.classes_)
+
+                        if 1 in classes:
+                            smoker_probability = probabilities[
+                                classes.index(1)
+                            ]
+
+                            st.metric(
+                                "Estimated Smoker Probability",
+                                f"{smoker_probability * 100:.2f}%"
+                            )
+
+                            st.progress(
+                                float(smoker_probability)
+                            )
+
+                    st.markdown("### Your Input Summary")
+
+                    summary_col1, summary_col2, summary_col3 = st.columns(3)
+
+                    with summary_col1:
+                        st.write(f"**Age:** {age}")
+                        st.write(f"**Gender:** {sex.title()}")
+
+                    with summary_col2:
+                        st.write(f"**BMI:** {bmi}")
+                        st.write(f"**Children:** {children}")
+
+                    with summary_col3:
+                        st.write(f"**Region:** {region.title()}")
+
+                    st.caption(
+                        "This is an experimental machine learning prediction, "
+                        "not a medical test."
+                    )
+
+                else:
                     st.error(
-                        "The model returned an unexpected smoker label. "
+                        "The model returned an unexpected result. "
                         "Expected 0 or 1."
                     )
-                elif valid_label:
-                    classification_label = "Smoker" if result == 1 else "Non-smoker"
-                    st.markdown(
-                        f"""
-                        <div class="result-card classification">
-                          <p class="result-eyebrow">Model classification</p>
-                          <p class="result-value">{classification_label}</p>
-                          <p class="result-copy">Prediction from the project's classification model</p>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                    st.caption("This is an experimental model prediction, not a medical test.")
+
+        except Exception as e:
+            st.error(f"Smoker classification failed: {e}")
 
 
-# ---------------- DATA ANALYSIS ----------------
+
+
+
+    # ---------------- DATA ANALYSIS ----------------
 
 elif page == "Data Analysis":
 
     st.title("📊 Exploratory Data Analysis")
+    st.write(
+            "Explore the medical insurance dataset using filters "
+            "and interactive summaries."
+        )
 
-    st.subheader("Dataset Preview")
+        # Keep the original dataset unchanged
+    analysis_df = df.copy()
+
     st.markdown(
-    df.head(10).to_html(index=False, border=0),
-    unsafe_allow_html=True
-)
+            '<p class="home-section-label">Filter the dataset</p>',
+            unsafe_allow_html=True
+        )
 
-    st.subheader("Insurance Charges Distribution")
-    fig, ax = plt.subplots(figsize=(9, 4))
-    sns.histplot(df["charges"], kde=True, ax=ax, color="#159D91")
-    ax.set_title("Distribution of Insurance Charges")
-    st.pyplot(fig)
-    plt.close(fig)
+    filter_col1, filter_col2 = st.columns(2)
 
-    st.subheader("Insurance Charges by Smoker Status")
-    fig, ax = plt.subplots(figsize=(8, 4))
-    sns.boxplot(data=df, x="smoker", y="charges", ax=ax)
-    ax.set_title("Charges Comparison by Smoking Status")
-    st.pyplot(fig)
-    plt.close(fig)
+        # Age filter
+    age_min = int(analysis_df["age"].min())
+    age_max = int(analysis_df["age"].max())
 
-    st.subheader("BMI vs Insurance Charges")
-    fig, ax = plt.subplots(figsize=(8, 4))
-    sns.scatterplot(data=df, x="bmi", y="charges", hue="smoker", ax=ax)
-    st.pyplot(fig)
-    plt.close(fig)
+    with filter_col1:
+            age_range = st.slider(
+                "Age range",
+                min_value=age_min,
+                max_value=age_max,
+                value=(age_min, age_max)
+            )
 
-    st.subheader("Correlation Heatmap")
-    numeric_df = df.select_dtypes(include=np.number)
-    fig, ax = plt.subplots(figsize=(8, 5))
-    sns.heatmap(numeric_df.corr(), annot=True, cmap="Blues", ax=ax)
-    st.pyplot(fig)
-    plt.close(fig)
+    analysis_df = analysis_df[
+            analysis_df["age"].between(age_range[0], age_range[1])
+        ]
+
+        # Gender filter
+    gender_options = sorted(analysis_df["sex"].dropna().unique())
+
+    with filter_col2:
+            selected_genders = st.multiselect(
+                "Gender",
+                gender_options,
+                default=gender_options
+            )
+
+    analysis_df = analysis_df[
+            analysis_df["sex"].isin(selected_genders)
+        ]
+
+    filter_col3, filter_col4 = st.columns(2)
+
+        # Smoking filter
+    smoker_options = sorted(analysis_df["smoker"].dropna().unique())
+
+    with filter_col3:
+            selected_smokers = st.multiselect(
+                "Smoking Status",
+                smoker_options,
+                default=smoker_options
+            )
+
+    analysis_df = analysis_df[
+            analysis_df["smoker"].isin(selected_smokers)
+        ]
+
+        # Region filter
+    region_options = sorted(analysis_df["region"].dropna().unique())
+
+    with filter_col4:
+            selected_regions = st.multiselect(
+                "Region",
+                region_options,
+                default=region_options
+            )
+
+    analysis_df = analysis_df[
+            analysis_df["region"].isin(selected_regions)
+        ]
+
+    st.caption(
+            f"Showing {len(analysis_df):,} of {len(df):,} records"
+        )
+
+    if analysis_df.empty:
+            st.warning("No records match your selected filters.")
+
+    else:
+
+            # SUMMARY METRICS
+            st.markdown(
+                '<p class="home-section-label">Filtered Dataset Summary</p>',
+                unsafe_allow_html=True
+            )
+
+            m1, m2, m3, m4 = st.columns(4)
+
+            m1.metric("Total Records", f"{len(analysis_df):,}")
+
+            m2.metric(
+                "Average Charges",
+                f"${analysis_df['charges'].mean():,.0f}"
+            )
+
+            m3.metric(
+                "Average BMI",
+                f"{analysis_df['bmi'].mean():.1f}"
+            )
+
+            smoker_percentage = (
+                analysis_df["smoker"].eq("yes").mean() * 100
+            )
+
+            m4.metric(
+                "Smoker Percentage",
+                f"{smoker_percentage:.1f}%"
+            )
+
+            # CHART 1 AND 2
+            st.markdown(
+                '<p class="home-section-label">Dataset Insights</p>',
+                unsafe_allow_html=True
+            )
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.subheader("Insurance Charges Distribution")
+
+                fig, ax = plt.subplots(figsize=(7, 4))
+
+                sns.histplot(
+                    data=analysis_df,
+                    x="charges",
+                    kde=True,
+                    color="#159D91",
+                    ax=ax
+                )
+
+                ax.set_xlabel("Insurance Charges ($)")
+                ax.set_ylabel("Number of Records")
+
+                fig.tight_layout()
+                st.pyplot(fig, width="stretch")
+                plt.close(fig)
+
+            with col2:
+                st.subheader("Average Charges by Smoker Status")
+
+                smoker_charges = (
+                    analysis_df.groupby("smoker")["charges"]
+                    .mean()
+                    .reset_index()
+                )
+
+                fig, ax = plt.subplots(figsize=(7, 4))
+
+                sns.barplot(
+                    data=smoker_charges,
+                    x="smoker",
+                    y="charges",
+                    hue="smoker",
+                    palette={
+                        "yes": "#0F9D91",
+                        "no": "#8AA6B8"
+                    },
+                    legend=False,
+                    ax=ax
+                )
+
+                ax.set_xlabel("Smoker Status")
+                ax.set_ylabel("Average Charges ($)")
+
+                fig.tight_layout()
+                st.pyplot(fig, width="stretch")
+                plt.close(fig)
+
+            # CHART 3 AND 4
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.subheader("BMI vs Insurance Charges")
+
+                fig, ax = plt.subplots(figsize=(7, 4))
+
+                sns.scatterplot(
+                    data=analysis_df,
+                    x="bmi",
+                    y="charges",
+                    hue="smoker",
+                    palette={
+                        "yes": "#0F9D91",
+                        "no": "#8AA6B8"
+                    },
+                    alpha=0.7,
+                    ax=ax
+                )
+
+                ax.set_xlabel("BMI")
+                ax.set_ylabel("Insurance Charges ($)")
+
+                fig.tight_layout()
+                st.pyplot(fig, width="stretch")
+                plt.close(fig)
+
+            with col2:
+                st.subheader("Average Charges by Region")
+
+                region_charges = (
+                    analysis_df.groupby("region")["charges"]
+                    .mean()
+                    .reset_index()
+                )
+
+                fig, ax = plt.subplots(figsize=(7, 4))
+
+                sns.barplot(
+                    data=region_charges,
+                    x="region",
+                    y="charges",
+                    color="#159D91",
+                    ax=ax
+                )
+
+                ax.set_xlabel("Region")
+                ax.set_ylabel("Average Charges ($)")
+                ax.tick_params(axis="x", rotation=15)
+
+                fig.tight_layout()
+                st.pyplot(fig, width="stretch")
+                plt.close(fig)
+
+            # FILTERED DATA
+            st.markdown(
+                '<p class="home-section-label">Filtered Records</p>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                analysis_df.head(15).to_html(
+                    index=False,
+                    border=0
+                ),
+                unsafe_allow_html=True
+            )
+
+            # DOWNLOAD
+            csv_data = analysis_df.to_csv(index=False).encode("utf-8")
+
+            st.download_button(
+                "⬇️ Download Filtered Dataset",
+                data=csv_data,
+                file_name="filtered_insurance_data.csv",
+                mime="text/csv"
+            )
+
+            st.caption(
+                "All charts and metrics update according to the selected filters. "
+                "For educational analysis only."
+            )
+
+
 
    
 
 
-
 # ---------------- MODEL PERFORMANCE ----------------
+
 elif page == "Model Performance":
 
     st.title("📈 Machine Learning Model Performance")
-
-    st.subheader("Regression Models")
-
-    reg_results = bundle["reg_results"].copy()
-
-    if "Linear Regression" not in reg_results["Model"].values:
-        st.warning("Regression results are incomplete.")
-
- 
-    st.markdown(
-        reg_results.round(3).to_html(index=False, border=0),
-        unsafe_allow_html=True
+    st.write(
+        "Compare the performance of trained regression and "
+        "classification models using evaluation metrics."
     )
 
-    st.subheader("Classification Models")
-
+    # Load saved model results
+    reg_results = bundle["reg_results"].copy()
     clf_results = bundle["clf_results"].copy()
 
-    st.markdown(
-        clf_results.round(4).to_html(index=False, border=0),
-        unsafe_allow_html=True
+    # ---------------- BEST MODEL HIGHLIGHTS ----------------
+
+    st.subheader("🏆 Best Model Highlights")
+
+    reg_best = None
+    clf_best = None
+
+    if not reg_results.empty and "R2 Score" in reg_results.columns:
+        reg_best = reg_results.loc[
+            reg_results["R2 Score"].idxmax()
+        ]
+
+    score_column = None
+
+    if not clf_results.empty:
+        for col in ["F1 Score", "F1", "Accuracy"]:
+            if col in clf_results.columns:
+                score_column = col
+                break
+
+        if score_column:
+            clf_best = clf_results.loc[
+                clf_results[score_column].idxmax()
+            ]
+
+    card1, card2 = st.columns(2)
+
+    with card1:
+        if reg_best is not None:
+            st.metric(
+                "Best Regression Model",
+                str(reg_best["Model"]),
+                f"R² Score: {reg_best['R2 Score']:.3f}"
+            )
+        else:
+            st.info("Regression results are unavailable.")
+
+    with card2:
+        if clf_best is not None:
+            st.metric(
+                "Best Classification Model",
+                str(clf_best["Model"]),
+                f"{score_column}: {clf_best[score_column]:.3f}"
+            )
+        else:
+            st.info("Classification results are unavailable.")
+
+    st.divider()
+
+    # ---------------- REGRESSION RESULTS ----------------
+
+    st.subheader("📊 Regression Model Evaluation")
+
+    st.write(
+        "Regression models predict the medical insurance charges "
+        "of a person."
     )
 
+    if not reg_results.empty:
 
-    st.subheader("Regression R2 Score Comparison")
+        st.markdown("**Regression Results Table**")
 
-    if "R2 Score" in reg_results.columns:
-
-        fig, ax = plt.subplots(figsize=(8, 4))
-
-        sns.barplot(
-            data=reg_results,
-            x="Model",
-            y="R2 Score",
-            ax=ax
+        st.markdown(
+            reg_results.round(4).to_html(index=False),
+            unsafe_allow_html=True
         )
 
-        ax.tick_params(
-            axis="x",
-            rotation=15
+        if "R2 Score" in reg_results.columns:
+
+            st.markdown("**R² Score Comparison**")
+
+            fig, ax = plt.subplots(figsize=(9, 4))
+
+            ax.bar(
+                reg_results["Model"].astype(str),
+                reg_results["R2 Score"]
+            )
+
+            ax.set_xlabel("Regression Models")
+            ax.set_ylabel("R² Score")
+            ax.set_title("Regression Model Comparison")
+            ax.tick_params(axis="x", rotation=20)
+
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close(fig)
+
+        if "RMSE" in reg_results.columns:
+
+            st.markdown("**RMSE Comparison**")
+
+            fig, ax = plt.subplots(figsize=(9, 4))
+
+            ax.bar(
+                reg_results["Model"].astype(str),
+                reg_results["RMSE"]
+            )
+
+            ax.set_xlabel("Regression Models")
+            ax.set_ylabel("RMSE")
+            ax.set_title("Root Mean Squared Error Comparison")
+            ax.tick_params(axis="x", rotation=20)
+
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close(fig)
+
+    else:
+        st.info("No regression results are available.")
+
+    st.divider()
+
+    # ---------------- CLASSIFICATION RESULTS ----------------
+
+    st.subheader("🎯 Classification Model Evaluation")
+
+    st.write(
+        "Classification models predict whether a person is a smoker "
+        "or a non-smoker."
+    )
+
+    if not clf_results.empty:
+
+        st.markdown("**Classification Results Table**")
+
+        st.markdown(
+            clf_results.round(4).to_html(index=False),
+            unsafe_allow_html=True
         )
 
-        st.pyplot(fig)
-        plt.close(fig)
+        available_metrics = [
+            col for col in
+            ["Accuracy", "Precision", "Recall", "F1 Score"]
+            if col in clf_results.columns
+        ]
 
-    st.subheader("Classification Accuracy Comparison")
+        if available_metrics:
 
-    if "Accuracy" in clf_results.columns:
+            st.markdown("**Classification Metrics Comparison**")
 
-        fig, ax = plt.subplots(figsize=(8, 4))
+            fig, ax = plt.subplots(figsize=(10, 5))
 
-        sns.barplot(
-            data=clf_results,
-            x="Model",
-            y="Accuracy",
-            ax=ax
-        )
+            x = np.arange(len(clf_results))
+            width = 0.8 / len(available_metrics)
 
-        ax.tick_params(
-            axis="x",
-            rotation=15
-        )
+            for i, metric in enumerate(available_metrics):
+                ax.bar(
+                    x + i * width,
+                    clf_results[metric],
+                    width,
+                    label=metric
+                )
 
-        st.pyplot(fig)
-        plt.close(fig)
+            ax.set_xlabel("Classification Models")
+            ax.set_ylabel("Score")
+            ax.set_title("Classification Model Comparison")
+            ax.set_xticks(
+                x + width * (len(available_metrics) - 1) / 2
+            )
+            ax.set_xticklabels(
+                clf_results["Model"].astype(str),
+                rotation=20
+            )
+            ax.legend()
 
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close(fig)
+
+        if (
+            "Precision" in clf_results.columns
+            and "Recall" in clf_results.columns
+        ):
+
+            st.markdown("**Precision vs Recall**")
+
+            fig, ax = plt.subplots(figsize=(8, 4))
+
+            ax.scatter(
+                clf_results["Recall"],
+                clf_results["Precision"],
+                s=100
+            )
+
+            for _, row in clf_results.iterrows():
+                ax.annotate(
+                    str(row["Model"]),
+                    (row["Recall"], row["Precision"]),
+                    xytext=(5, 5),
+                    textcoords="offset points"
+                )
+
+            ax.set_xlabel("Recall")
+            ax.set_ylabel("Precision")
+            ax.set_title("Precision and Recall Comparison")
+            ax.grid(alpha=0.3)
+
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close(fig)
+
+    else:
+        st.info("No classification results are available.")
+
+    st.divider()
+
+    # ---------------- METRIC EXPLANATIONS ----------------
+
+    st.subheader("📚 Understanding Evaluation Metrics")
+
+    with st.expander("View metric explanations"):
+
+        st.markdown("""
+        **Regression Metrics**
+
+        - **MAE:** Average absolute difference between actual and predicted charges.
+        - **MSE:** Average squared prediction error.
+        - **RMSE:** Square root of the mean squared error.
+        - **R² Score:** Shows how well the model explains variations in charges.
+
+        **Classification Metrics**
+
+        - **Accuracy:** Percentage of correctly classified predictions.
+        - **Precision:** How many predicted positive cases were actually positive.
+        - **Recall:** How many actual positive cases were correctly identified.
+        - **F1 Score:** Balance between precision and recall.
+        """)
+
+    st.caption(
+        "Model results are based on the evaluation metrics stored "
+        "in the trained project bundle. Educational use only."
+    )
 
     # ---------------- FOOTER ----------------
+
     st.sidebar.divider()
-
-    st.sidebar.caption(
-        "Medical Insurance ML Mini Project"
-    )
-
-    st.sidebar.caption(
-        "Educational use only"
-    )
+    st.sidebar.caption("Medical Insurance ML Mini Project")
+    st.sidebar.caption("Educational use only")
