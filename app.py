@@ -6,7 +6,6 @@ import joblib
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
-import textwrap
 # ---------------- PAGE CONFIGURATION ----------------
 st.set_page_config(
     page_title="Medical Insurance Predictor",
@@ -53,8 +52,10 @@ st.markdown("""
 }
 
 .main h1 {
+    font-size: 1.75rem;
     font-weight: 750;
     letter-spacing: -0.7px;
+    line-height: 1.2;
 }
 
 .main h2, .main h3 {
@@ -67,9 +68,8 @@ st.markdown("""
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg, #102A43 0%, #153B55 100%
-    );
+    background: #102A43;
+    border-right: 1px solid rgba(255,255,255,.08);
 }
 
 [data-testid="stSidebar"] * {
@@ -91,17 +91,17 @@ st.markdown("""
 
 /* Hero banner */
 .hero-panel {
-    background: linear-gradient(
-        115deg, #102A43 0%, #18566B 100%
-    );
-    border-radius: 20px;
-    padding: 30px 34px;
-    margin: 8px 0 24px 0;
-    box-shadow: 0 10px 26px rgba(16,42,67,.13);
+    background: #FFFFFF;
+    border: 1px solid #DCE5EC;
+    border-left: 4px solid #0F9D91;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 4px 0 18px;
+    box-shadow: 0 2px 8px rgba(16,42,67,.04);
 }
 
 .hero-kicker {
-    color: #A8E6DE !important;
+    color: #087F78 !important;
     text-transform: uppercase;
     letter-spacing: 1.6px;
     font-size: .78rem;
@@ -110,16 +110,16 @@ st.markdown("""
 }
 
 .hero-heading {
-    color: #FFFFFF !important;
-    font-size: 2.1rem;
+    color: #102A43 !important;
+    font-size: 1.75rem;
     line-height: 1.18;
     font-weight: 800;
     margin: 0 0 10px 0;
 }
 
 .hero-copy {
-    color: #D9E8F1 !important;
-    font-size: 1rem;
+    color: #465B6E !important;
+    font-size: .95rem;
     margin: 0;
     max-width: 760px;
 }
@@ -128,10 +128,10 @@ st.markdown("""
 [data-testid="stMetric"] {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-left: 4px solid #0F9D91;
-    border-radius: 14px;
-    padding: 17px 20px;
-    box-shadow: 0 5px 18px rgba(16,42,67,.055);
+    border-left: 3px solid #0F9D91;
+    border-radius: 11px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(16,42,67,.04);
 }
 
 [data-testid="stMetricLabel"] p {
@@ -148,10 +148,10 @@ st.markdown("""
 .section-card {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-radius: 15px;
-    padding: 20px 22px;
-    min-height: 180px;
-    box-shadow: 0 5px 18px rgba(16,42,67,.045);
+    border-radius: 12px;
+    padding: 16px 18px;
+    min-height: 148px;
+    box-shadow: 0 2px 8px rgba(16,42,67,.04);
 }
 
 .section-card h3 {
@@ -185,9 +185,10 @@ st.markdown("""
 [data-testid="stForm"] {
     background: #FFFFFF;
     border: 1px solid #E2EAF2;
-    border-radius: 16px;
-    padding: 22px 24px 18px;
-    box-shadow: 0 5px 18px rgba(16,42,67,.045);
+    border-radius: 12px;
+    max-width: 900px;
+    padding: 14px 18px 12px;
+    box-shadow: 0 2px 8px rgba(16,42,67,.04);
 }
 
 [data-testid="stTextInput"] input,
@@ -196,7 +197,29 @@ st.markdown("""
     background: #FFFFFF;
     color: #18324B;
     border-color: #D5E0EA;
-    border-radius: 9px;
+    border-radius: 7px;
+    min-height: 2.35rem;
+}
+
+[data-testid="stNumberInput"] input {
+    height: 2.35rem;
+    min-height: 2.35rem;
+    color: #18324B !important;
+}
+[data-testid="stSelectbox"] [data-baseweb="select"] * { color: #18324B !important; }
+div[role="listbox"] * { color: #18324B !important; }
+[data-testid="stNumberInput"] button {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+}
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] label,
+[data-testid="stWidgetLabel"] {
+    color: #263B4D !important;
+    font-size: .84rem !important;
+    font-weight: 650 !important;
+    margin-bottom: .2rem !important;
 }
 
 .stButton > button,
@@ -204,10 +227,11 @@ st.markdown("""
     background: #0F9D91;
     color: white !important;
     border: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: 700;
-    padding: .62rem 1.1rem;
-    transition: .2s ease;
+    padding: .48rem .9rem;
+    min-height: 2.35rem;
+    transition: background-color .15s ease;
 }
 
 .stButton > button:hover,
@@ -232,18 +256,75 @@ st.markdown("""
 [data-testid="stAlert"] {
     border-radius: 12px;
 }
+/* Sidebar brand and navigation */
+[data-testid="stSidebar"] {
+    background: #102A43;
+    border-right: 1px solid rgba(255,255,255,.08);
+}
+[data-testid="stSidebar"] [role="radiogroup"] { gap: 2px; }
+[data-testid="stSidebar"] [role="radiogroup"] label {
+    min-height: 38px;
+    padding: 6px 10px !important;
+    margin: 1px 0;
+    border-radius: 7px;
+    border-left: 2px solid transparent;
+    transition: background .15s ease;
+}
+[data-testid="stSidebar"] [role="radiogroup"] label:hover {
+    background: rgba(255,255,255,.09);
+}
+[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
+    background: rgba(15,157,145,.18);
+    border-left-color: #39C6B6;
+}
+[data-testid="stSidebar"] [role="radiogroup"] label p { font-size: .92rem; font-weight: 600; }
+[data-testid="stSidebar"] [role="radiogroup"] label[data-baseweb="radio"] > div:first-child {
+    width: 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+}
+[data-testid="stSidebar"] [role="radiogroup"] label:focus-within {
+    outline: 2px solid rgba(57,198,182,.75);
+    outline-offset: 1px;
+}
+.brand-lockup { display:flex; align-items:center; gap:10px; padding:4px 2px 12px; }
+.brand-mark {
+    width:36px; height:36px; display:grid; place-items:center; flex:0 0 36px;
+    border-radius:8px; background:#0F9D91;
+}
+.brand-mark svg { width:24px; height:24px; display:block; }
+.brand-name { color:#fff; font-size:1rem; font-weight:700; letter-spacing:-.2px; line-height:1.2; }
+.brand-subtitle { color:#D1DCE5; font-size:.72rem; margin-top:3px; }
+
+/* Dashboard surfaces and responsive layouts */
+.main .block-container {
+    padding-left: clamp(1rem, 3vw, 2.5rem);
+    padding-right: clamp(1rem, 3vw, 2.5rem);
+}
+[data-testid="stMetric"] { min-height:96px; }
+.result-card {
+    background:#fff; border:1px solid #D9E7ED; border-left:4px solid #0F9D91;
+    border-radius:11px; padding:14px 18px; margin:12px 0 6px;
+    max-width:900px; box-shadow:0 2px 8px rgba(16,42,67,.05);
+}
+.result-eyebrow { color:#526779 !important; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.7px; margin:0 0 4px; }
+.result-value { color:#102A43 !important; font-size:1.65rem; line-height:1.15; font-weight:750; margin:0; }
+.result-copy { color:#465B6E !important; font-size:.84rem; margin:5px 0 0; }
+.result-card.classification { border-left-color:#23877B; }
+@media (max-width:760px) {
+    .main .block-container { padding-top:1rem; padding-bottom:2rem; }
+    .hero-panel { padding:16px; border-radius:10px; }
+    .hero-heading { font-size:1.45rem; }
+    [data-testid="stForm"] { padding:12px 12px 10px; }
+    [data-testid="stMetric"] { min-height:96px; padding:14px; }
+    .result-value { font-size:1.65rem; }
+    [data-testid="stHorizontalBlock"] { flex-wrap:wrap !important; gap:.6rem !important; }
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] { min-width:min(100%, 260px) !important; flex:1 1 100% !important; }
+}
 </style>
 """, unsafe_allow_html=True)
-st.markdown(textwrap.dedent("""
-<div class="hero-panel">
-    <p class="hero-kicker">Machine learning • Healthcare analytics</p>
-    <p class="hero-heading">Understand insurance costs.<br>Explore smarter predictions.</p>
-    <p class="hero-copy">
-        An interactive academic project for estimating medical insurance charges,
-        exploring dataset patterns, and demonstrating smoker-status classification.
-    </p>
-</div>
-"""), unsafe_allow_html=True)
 @st.cache_resource
 def load_bundle():
     bundle_path = Path(__file__).resolve().parent / "insurance_project_bundle.pkl"
@@ -477,23 +558,54 @@ clf_columns = bundle["clf_columns"]
 
 
 # ---------------- SIDEBAR ----------------
-st.sidebar.title("🏥 MediPredict")
-st.sidebar.write("Medical Insurance Analytics")
+st.sidebar.markdown(
+    """
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3.2 27 7.6v7.2c0 7.2-4.7 12.1-11 14-6.3-1.9-11-6.8-11-14V7.6L16 3.2Z" fill="#E7FBF8"/>
+          <path d="M14.1 8.8h3.8v5.3h5.3v3.8h-5.3v5.3h-3.8v-5.3H8.8v-3.8h5.3V8.8Z" fill="#087F78"/>
+        </svg>
+      </div>
+      <div><div class="brand-name">MediPredict</div>
+      <div class="brand-subtitle">Healthcare analytics</div></div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-page = st.sidebar.radio(
+selected_page = st.sidebar.radio(
     "NAVIGATION",
     [
-        "Home",
-        "Insurance Prediction",
-        "Smoker Classification",
-        "Data Analysis",
-        "Model Performance"
+        "⌂  Home",
+        "▣  Insurance Prediction",
+        "⚕  Smoker Classification",
+        "▤  Data Analysis",
+        "▥  Model Performance"
     ]
 )
+page = {
+    "⌂  Home": "Home",
+    "▣  Insurance Prediction": "Insurance Prediction",
+    "⚕  Smoker Classification": "Smoker Classification",
+    "▤  Data Analysis": "Data Analysis",
+    "▥  Model Performance": "Model Performance"
+}[selected_page]
 
 
 # ---------------- HOME ----------------
 if page == "Home":
+
+    st.markdown(
+        """
+        <div class="hero-panel">
+          <p class="hero-kicker">Healthcare analytics</p>
+          <p class="hero-heading">Medical insurance insights</p>
+          <p class="hero-copy">Explore insurance cost estimates, dataset patterns and model predictions.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Live statistics calculated from the dataset
     total_records = len(df)
@@ -544,7 +656,7 @@ if page == "Home":
         ax.set_ylabel("Insurance charges ($)")
         ax.set_title("Smokers and non-smokers")
         fig.tight_layout()
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, width="stretch")
         plt.close(fig)
         st.caption(
             "This boxplot compares the distribution of insurance charges "
@@ -567,7 +679,7 @@ if page == "Home":
         ax.set_ylabel("Insurance charges ($)")
         ax.set_title("How charges vary with age")
         fig.tight_layout()
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, width="stretch")
         plt.close(fig)
         st.caption(
             "Each point represents one dataset record; colour indicates "
@@ -757,7 +869,7 @@ elif page == "Insurance Prediction":
 
         submitted = st.form_submit_button(
             "Predict Insurance Charges",
-            use_container_width=True
+            width="content"
         )
 
     if submitted:
@@ -811,17 +923,17 @@ elif page == "Insurance Prediction":
                         "Please try again."
                     )
                 else:
-                    st.success("Prediction completed!")
-
-                    st.metric(
-                        "Estimated Insurance Charges",
-                        f"${prediction:,.2f}"
+                    st.markdown(
+                        f"""
+                        <div class="result-card">
+                          <p class="result-eyebrow">Estimated insurance charges</p>
+                          <p class="result-value">${prediction:,.2f}</p>
+                          <p class="result-copy">Model generated estimate · For educational exploration only</p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
                     )
-
-                    st.caption(
-                        "This is an educational estimate, "
-                        "not an actual insurance quotation."
-                    )
+                    st.caption("This estimate is not an actual insurance quotation.")
 
 
 # ---------------- SMOKER CLASSIFICATION ----------------
@@ -834,51 +946,54 @@ elif page == "Smoker Classification":
     )
 
     with st.form("smoker_form"):
+        input_left, input_right = st.columns(2)
 
-        age = st.number_input(
-            "Age",
-            18,
-            100,
-            25,
-            key="smoker_age"
-        )
+        with input_left:
+            age = st.number_input(
+                "Age",
+                18,
+                100,
+                25,
+                key="smoker_age"
+            )
 
-        sex = st.selectbox(
-            "Gender",
-            ["female", "male"],
-            key="smoker_sex"
-        )
+            bmi = st.number_input(
+                "BMI",
+                10.0,
+                60.0,
+                27.5,
+                key="smoker_bmi"
+            )
 
-        bmi = st.number_input(
-            "BMI",
-            10.0,
-            60.0,
-            27.5,
-            key="smoker_bmi"
-        )
+            region = st.selectbox(
+                "Region",
+                [
+                    "southwest",
+                    "southeast",
+                    "northwest",
+                    "northeast"
+                ],
+                key="smoker_region"
+            )
 
-        children = st.number_input(
-            "Number of Children",
-            0,
-            10,
-            0,
-            key="smoker_children"
-        )
+        with input_right:
+            sex = st.selectbox(
+                "Gender",
+                ["female", "male"],
+                key="smoker_sex"
+            )
 
-        region = st.selectbox(
-            "Region",
-            [
-                "southwest",
-                "southeast",
-                "northwest",
-                "northeast"
-            ],
-            key="smoker_region"
-        )
+            children = st.number_input(
+                "Number of Children",
+                0,
+                10,
+                0,
+                key="smoker_children"
+            )
 
         submitted = st.form_submit_button(
             "Classify",
-            use_container_width=True
+            width="content"
         )
 
     if submitted:
@@ -926,16 +1041,19 @@ elif page == "Smoker Classification":
                         "The model returned an unexpected smoker label. "
                         "Expected 0 or 1."
                     )
-                elif result == 1:
-                    st.warning("Model prediction: Smoker")
-                else:
-                    st.success("Model prediction: Non-Smoker")
-
-                if valid_label:
-                    st.caption(
-                        "This is an experimental ML prediction, "
-                        "not a medical test."
+                elif valid_label:
+                    classification_label = "Smoker" if result == 1 else "Non-smoker"
+                    st.markdown(
+                        f"""
+                        <div class="result-card classification">
+                          <p class="result-eyebrow">Model classification</p>
+                          <p class="result-value">{classification_label}</p>
+                          <p class="result-copy">Prediction from the project's classification model</p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
                     )
+                    st.caption("This is an experimental model prediction, not a medical test.")
 
 
 # ---------------- DATA ANALYSIS ----------------

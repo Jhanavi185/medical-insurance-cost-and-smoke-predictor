@@ -59,12 +59,14 @@ The application provides an interactive interface where users can enter personal
 
 ```text
 medical-insurance-cost-and-smoke-predictor/
-│
 ├── app.py
+├── Medical_Insurance_Cost_Smoker_Predictor (1).ipynb
 ├── insurance_project_bundle.pkl
 ├── requirements.txt
 └── README.md
 ```
+
+`insurance.csv` is needed to reproduce the training process in the notebook. It is not listed above because it is not currently included in this project folder. The existing `insurance_project_bundle.pkl` contains the saved models and supporting data used to run the Streamlit application; the CSV is not needed to run the application when that bundle is present.
 
 ## ⚙️ Installation and Setup
 
@@ -116,11 +118,11 @@ The project uses two Machine Learning approaches:
 - Compares multiple classification models.
 - Uses accuracy for model performance comparison.
 
-The trained models and supporting dataset are stored in the serialized model bundle.
+The trained models, evaluation results, feature schemas, and cleaned dataset are stored in the serialized model bundle used by the application. Reproducing the training process requires `insurance.csv` as the notebook input; running the application uses the existing bundle instead.
 
 ## Model Bundle Structure
 
-The notebook builds project_bundle and saves it as insurance_project_bundle.pkl with joblib. The application reads these 13 keys:
+The notebook builds `project_bundle` and saves it as `insurance_project_bundle.pkl` with joblib. The bundle contains the following 13 keys. The Streamlit application currently uses 9 of them: `best_reg_model`, `best_clf_model`, `reg_models`, `clf_models`, `reg_results`, `clf_results`, `reg_columns`, `clf_columns`, and `dataset`. The other four keys (`best_reg_name`, `best_clf_name`, `tuned_reg_results`, and `tuned_clf_results`) are saved in the bundle but are not currently used by the application.
 
 | Key | Purpose |
 |---|---|
